@@ -59,9 +59,21 @@ const schema = envy.defineConfig({
     },
   },
 
+  storage: {
+    values: {
+      bucket: { default: "uploads" },
+    },
+  },
+
   session: {
     values: {
       sealKey: { generate: { bytes: 32 }, describe: "Seals the session cookie." },
+    },
+  },
+
+  backend: {
+    values: {
+      adminKey: { describe: "Printed by the backend once it is up. Captured, not asked for." },
     },
   },
 });
@@ -170,8 +182,11 @@ lists the toolchain. Types come out separately, since they are not reachable thr
 value:
 
 ```ts
-import type { Config, Loaded, Section } from "@rapture-sh/envy";
+import type { ConfigSpec, Loaded, SectionValues, ValuePath } from "@rapture-sh/envy";
 ```
+
+You rarely need them. `envy.defineConfig` infers everything from the schema you pass it,
+and `envy.load` carries that inference through to `cfg`.
 
 ## The pieces
 
