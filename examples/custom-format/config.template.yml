@@ -1,0 +1,18 @@
+# Every value the setup can ask for, with the credentials blank.
+# Copy it to config.yml and fill in what you have, or just run the setup and answer.
+#
+# Generated. Run the setup to rewrite it rather than editing it by hand.
+
+# The site
+site:
+  # What the proxy answers on.
+  domain: app.localhost
+  # Where it sends the traffic.
+  upstream: 127.0.0.1:3000
+  # For the certificate.
+  email: dev@example.test
+
+# Storage
+storage:
+  bucket: uploads
+  region: us-east-1

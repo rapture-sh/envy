@@ -1,0 +1,18 @@
+# Every value the setup can ask for, with the credentials blank.
+# Copy it to config.yml and fill in what you have, or just run the setup and answer.
+#
+# Generated. Run the setup to rewrite it rather than editing it by hand.
+
+# The app
+app:
+  # Shown in the page title.
+  name: My app
+  # What the dev server listens on.
+  port: "3000"
+
+# Analytics
+analytics:
+  # Sends page views to your analytics project.
+  # your analytics dashboard, Settings, Project
+  # Optional. Empty and analytics stays off.
+  project-token: phc_

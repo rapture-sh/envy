@@ -1,0 +1,39 @@
+# Every value the setup can ask for, with the credentials blank.
+# Copy it to config.yml and fill in what you have, or just run the setup and answer.
+#
+# Generated. Run the setup to rewrite it rather than editing it by hand.
+
+# Shared
+# Everything every app needs.
+shared:
+  # Which stack this is.
+  environment: development
+
+# Storage
+# The local S3 stand-in. Nothing here is secret.
+storage:
+  bucket: uploads
+  access-key-id: local
+  secret-access-key: local-secret
+
+# Web app
+web:
+  port: "3000"
+  # Reaches the browser, so it is public by design.
+  # your analytics dashboard
+  # Optional. Empty and analytics stays off.
+  analytics-token: phc_
+
+# Admin app
+admin:
+  port: "3001"
+  # Who gets in locally.
+  allowed-email: admin@example.test
+
+# API service
+api:
+  port: "8080"
+  # Server side key for the checkout endpoints.
+  # dashboard.stripe.com/test/apikeys
+  # Required.
+  payments-key: sk_test_

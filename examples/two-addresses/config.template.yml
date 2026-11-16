@@ -1,0 +1,10 @@
+# Every value the setup can ask for, with the credentials blank.
+# Copy it to config.yml and fill in what you have, or just run the setup and answer.
+#
+# Generated. Run the setup to rewrite it rather than editing it by hand.
+
+# Storage
+storage:
+  bucket: uploads
+  access-key-id: local
+  secret-access-key: local-secret
