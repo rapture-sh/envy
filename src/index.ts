@@ -1,3 +1,15 @@
+export type {
+  ConvexOptions,
+  PushOptions,
+  RunOptions as ConvexRunOptions,
+} from "./adapters/convex.js";
+export type {
+  ComposeOptions,
+  DownOptions,
+  ExecOptions,
+  LogsOptions,
+  UpOptions,
+} from "./adapters/docker.js";
 export type { CmdOptions, CmdResult } from "./cmd.js";
 export type { Defaults } from "./defaults.js";
 export type {

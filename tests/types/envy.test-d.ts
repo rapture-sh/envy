@@ -11,6 +11,8 @@ describe("the envy surface", () => {
   it("should carry exactly the public modules", () => {
     expectTypeOf<keyof typeof envy>().toEqualTypeOf<
       | "cmd"
+      | "convex"
+      | "docker"
       | "defaults"
       | "defineConfig"
       | "env"
@@ -20,6 +22,7 @@ describe("the envy surface", () => {
       | "fail"
       | "Fail"
       | "load"
+      | "parseEnv"
       | "ui"
       | "wait"
       | "write"

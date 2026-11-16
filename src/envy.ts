@@ -1,9 +1,12 @@
+import { convex } from "./adapters/convex.js";
+import { docker } from "./adapters/docker.js";
 import { cmd } from "./cmd.js";
 import { defaults } from "./defaults.js";
 import { defineConfig } from "./define.js";
 import { Fail, fail } from "./errors.js";
 import { env, json, text, yaml } from "./format/index.js";
 import { load } from "./load.js";
+import { parseEnv } from "./parse.js";
 import { ui } from "./ui/index.js";
 import { wait } from "./wait.js";
 import { write } from "./write.js";
@@ -18,6 +21,8 @@ import { write } from "./write.js";
  */
 export const envy = {
   cmd,
+  convex,
+  docker,
   defaults,
   defineConfig,
   env,
@@ -27,6 +32,7 @@ export const envy = {
   fail,
   Fail,
   load,
+  parseEnv,
   ui,
   wait,
   write,
