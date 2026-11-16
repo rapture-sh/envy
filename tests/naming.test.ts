@@ -58,14 +58,12 @@ describe("envNameFor", () => {
     expect(envNameFor("stripe", "secretKey", "SK", undefined)).toBe("SK");
   });
 
-  it("should put a prefix in front of the convention", () => {
-    expect(envNameFor("web-client-1", "clientId", undefined, "AUTH")).toBe(
-      "AUTH_WEB_CLIENT_1_CLIENT_ID",
-    );
+  it("should use a prefix in place of the section", () => {
+    expect(envNameFor("web-client-1", "clientId", undefined, "AUTH")).toBe("AUTH_CLIENT_ID");
   });
 
-  it("should put a prefix in front of a declared name too", () => {
-    expect(envNameFor("stripe", "secretKey", "SK", "AUTH")).toBe("AUTH_SK");
+  it("should leave a declared name alone when there is a prefix", () => {
+    expect(envNameFor("stripe", "secretKey", "SK", "AUTH")).toBe("SK");
   });
 
   it("should ignore an empty prefix", () => {
@@ -73,6 +71,6 @@ describe("envNameFor", () => {
   });
 
   it("should normalise a prefix that was written in another shape", () => {
-    expect(envNameFor("stripe", "secretKey", undefined, "myApp")).toBe("MY_APP_STRIPE_SECRET_KEY");
+    expect(envNameFor("stripe", "secretKey", undefined, "myApp")).toBe("MY_APP_SECRET_KEY");
   });
 });

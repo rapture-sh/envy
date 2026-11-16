@@ -35,7 +35,7 @@ export type {
 } from "./format/index.js";
 export type { AskMode, LoadOptions } from "./load.js";
 export type { EnvOptions, Loaded } from "./loaded.js";
-export type { EnvName, Kebab, Prefixed } from "./naming.js";
+export type { EnvName, Kebab } from "./naming.js";
 export type { StoreData } from "./store/index.js";
 export type { ReadyOptions, RunOptions, Warning, WarnOptions } from "./ui/index.js";
 export type { HttpWaitOptions, PortWaitOptions, WaitOptions } from "./wait.js";

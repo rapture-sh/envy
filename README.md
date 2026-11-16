@@ -274,12 +274,12 @@ STRIPE_SECRET_KEY=sk_test_51Ab...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
 # Auth
-AUTH_WEB_CLIENT_1_CLIENT_ID=abc
-AUTH_WEB_CLIENT_1_REDIRECT_URI=http://localhost:3000/callback
+AUTH_CLIENT_ID=abc
+AUTH_REDIRECT_URI=http://localhost:3000/callback
 ```
 
-`prefix` goes in front of the name the convention already produced, so it adds to the
-section rather than replacing it.
+`prefix` stands in for the section name, so a section called `web-client-1` can still
+write `AUTH_CLIENT_ID`. A value with its own `env` name keeps it either way.
 
 A group becomes a comment and a block. `undefined` values are left out, empty strings are
 written, and values are quoted only where leaving them bare would change them.
@@ -404,6 +404,8 @@ cfg.get("web-client-1.redirectUri");    // string, it has a default
 
 cfg.env("stripe");          // { STRIPE_SECRET_KEY?: string, STRIPE_WEBHOOK_SECRET?: string }
 cfg.env("web-client-1");    // { WEB_CLIENT_1_CLIENT_ID?: string, ... }
+
+cfg.env("web-client-1", { prefix: "AUTH" });   // { AUTH_CLIENT_ID?: string, ... }
 ```
 
 A value is `string` rather than `string | undefined` when the schema makes it certain:
@@ -467,7 +469,7 @@ ENVY_NO_WARN=1 pnpm setup
 | `cfg.get("section.value")` | one value, typed |
 | `cfg.has("section.value")` | whether it has something in it |
 | `cfg.section("name")` | a whole section, typed |
-| `cfg.env("name", options)` | a section as env names, with `prefix` and overrides |
+| `cfg.env("name", options)` | a section as env names. `prefix` stands in for the section |
 | `cfg.capture("path", fn)` | run something that prints a value, keep it, skip it next time |
 | `cfg.missing()` | required values that are still empty |
 | `cfg.all()` | everything, typed |

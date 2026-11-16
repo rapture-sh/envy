@@ -119,10 +119,10 @@ describe("the inference the readme promises", () => {
     }>();
   });
 
-  it("should add a prefix to the name the convention produced", () => {
+  it("should use a prefix in place of the section name", () => {
     expectTypeOf(cfg.env("web-client-1", { prefix: "AUTH" })).toEqualTypeOf<{
-      AUTH_WEB_CLIENT_1_CLIENT_ID?: string;
-      AUTH_WEB_CLIENT_1_REDIRECT_URI?: string;
+      AUTH_CLIENT_ID?: string;
+      AUTH_REDIRECT_URI?: string;
     }>();
   });
 });

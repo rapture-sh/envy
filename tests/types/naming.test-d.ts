@@ -1,5 +1,5 @@
 import { describe, expectTypeOf, it } from "vitest";
-import type { EnvName, Kebab, Prefixed } from "~/naming";
+import type { EnvName, Kebab } from "~/naming";
 
 /**
  * These assert the type-level rules match the functions in `tests/naming.test.ts` case for
@@ -52,18 +52,12 @@ describe("EnvName", () => {
   it("should handle a one word section and value", () => {
     expectTypeOf<EnvName<"storage", "bucket">>().toEqualTypeOf<"STORAGE_BUCKET">();
   });
-});
 
-describe("Prefixed", () => {
-  it("should put a prefix in front", () => {
-    expectTypeOf<Prefixed<"AUTH", "STRIPE_SECRET_KEY">>().toEqualTypeOf<"AUTH_STRIPE_SECRET_KEY">();
-  });
-
-  it("should leave the name alone when there is no prefix", () => {
-    expectTypeOf<Prefixed<"", "STRIPE_SECRET_KEY">>().toEqualTypeOf<"STRIPE_SECRET_KEY">();
+  it("should produce the prefixed name when a prefix stands in for the section", () => {
+    expectTypeOf<EnvName<"AUTH", "clientId">>().toEqualTypeOf<"AUTH_CLIENT_ID">();
   });
 
   it("should normalise a prefix that was written in another shape", () => {
-    expectTypeOf<Prefixed<"myApp", "A">>().toEqualTypeOf<"MY_APP_A">();
+    expectTypeOf<EnvName<"myApp", "secretKey">>().toEqualTypeOf<"MY_APP_SECRET_KEY">();
   });
 });

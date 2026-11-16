@@ -33,7 +33,12 @@ export function toEnvName(section: string, key: string): string {
 
 /**
  * The env name a value is written under: whatever the schema said, else the convention,
- * with an optional prefix in front of it.
+ * with `prefix` standing in for the section name where the caller gave one.
+ *
+ * A prefix replaces the section rather than stacking on top of it, so a section called
+ * `web-client-1` read with `{ prefix: "AUTH" }` writes `AUTH_CLIENT_ID` and not
+ * `AUTH_WEB_CLIENT_1_CLIENT_ID`. A declared name is left exactly as it was declared,
+ * because `env:` has already said what the name is.
  */
 export function envNameFor(
   section: string,
@@ -41,11 +46,9 @@ export function envNameFor(
   declared: string | undefined,
   prefix: string | undefined,
 ): string {
-  const name = declared ?? toEnvName(section, key);
+  if (declared !== undefined) return declared;
 
-  return prefix === undefined || prefix === ""
-    ? name
-    : `${toKebab(prefix).replace(/-/gu, "_").toUpperCase()}_${name}`;
+  return toEnvName(prefix === undefined || prefix === "" ? section : prefix, key);
 }
 
 type IsCapital<TChar extends string> = TChar extends Lowercase<TChar> ? false : true;
@@ -86,12 +89,12 @@ type DashToUnderscore<TName extends string> = TName extends `${infer THead}-${in
   ? `${THead}_${DashToUnderscore<TRest>}`
   : TName;
 
-/** The type-level twin of `toEnvName`. */
+/**
+ * The type-level twin of `toEnvName`.
+ *
+ * It is also the twin of the prefix rule, since a prefix stands in for the section: pass
+ * the prefix as `TSection` and the same conversion produces the same name.
+ */
 export type EnvName<TSection extends string, TKey extends string> = Uppercase<
   DashToUnderscore<`${Kebab<TSection>}-${Kebab<TKey>}`>
 >;
-
-/** The type-level twin of the prefix half of `envNameFor`. */
-export type Prefixed<TPrefix extends string, TName extends string> = TPrefix extends ""
-  ? TName
-  : `${Uppercase<DashToUnderscore<Kebab<TPrefix>>>}_${TName}`;

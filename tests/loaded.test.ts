@@ -103,10 +103,10 @@ describe("env", () => {
     expect(loadedWith(filled).loaded.env("stripe")).not.toHaveProperty("STRIPE_WEBHOOK_SECRET");
   });
 
-  it("should put a prefix in front of every name", () => {
+  it("should use a prefix in place of the section", () => {
     expect(loadedWith(filled).loaded.env("stripe", { prefix: "AUTH" })).toEqual({
-      AUTH_STRIPE_SECRET_KEY: "sk_abc",
-      AUTH_NEXT_PUBLIC_STRIPE_KEY: "pk_abc",
+      AUTH_SECRET_KEY: "sk_abc",
+      NEXT_PUBLIC_STRIPE_KEY: "pk_abc",
     });
   });
 

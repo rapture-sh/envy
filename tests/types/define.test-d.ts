@@ -136,11 +136,11 @@ describe("SectionEnv", () => {
     }>();
   });
 
-  it("should put a prefix in front of every name, declared or not", () => {
+  it("should use a prefix in place of the section, and leave a declared name alone", () => {
     expectTypeOf<SectionEnv<Schema, "stripe", "AUTH">>().toEqualTypeOf<{
-      AUTH_STRIPE_SECRET_KEY: string;
-      AUTH_STRIPE_WEBHOOK_SECRET: string;
-      AUTH_NEXT_PUBLIC_STRIPE_KEY: string;
+      AUTH_SECRET_KEY: string;
+      AUTH_WEBHOOK_SECRET: string;
+      NEXT_PUBLIC_STRIPE_KEY: string;
     }>();
   });
 });

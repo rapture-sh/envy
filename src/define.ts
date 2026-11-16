@@ -1,4 +1,4 @@
-import type { EnvName, Kebab, Prefixed } from "./naming.js";
+import type { EnvName, Kebab } from "./naming.js";
 
 export type GenerateSpec = {
   /** How many random bytes to take. Defaults to 32. */
@@ -104,11 +104,13 @@ export type SectionValues<TSection extends SectionSpec> = {
 };
 
 /**
- * The env name one value ends up under: what the schema declared, else the convention,
- * with the prefix in front either way.
+ * The env name one value ends up under: what the schema declared, else the convention
+ * over the section, or over `prefix` where the caller gave one.
  *
  * `TValue extends { env: ... }` has to come first, because a declared name is the whole
- * answer and running it through the convention afterwards would mangle it.
+ * answer and running it through the convention afterwards would mangle it. A prefix does
+ * not touch a declared name either, for the same reason: `env:` has already said what the
+ * name is.
  */
 type EnvNameOf<
   TSection extends string,
@@ -116,8 +118,10 @@ type EnvNameOf<
   TValue extends ValueSpec,
   TPrefix extends string,
 > = TValue extends { env: infer TDeclared extends string }
-  ? Prefixed<TPrefix, TDeclared>
-  : Prefixed<TPrefix, EnvName<TSection, TKey>>;
+  ? TDeclared
+  : TPrefix extends ""
+    ? EnvName<TSection, TKey>
+    : EnvName<TPrefix, TKey>;
 
 /**
  * A section as the env names it writes.

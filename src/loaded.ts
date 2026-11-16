@@ -11,7 +11,7 @@ import { envNameFor, toKebab } from "./naming.js";
 import type { StoreData } from "./store/index.js";
 
 export type EnvOptions<TPrefix extends string = string> = {
-  /** Put this in front of every name in the section, declared or conventional. */
+  /** Used in place of the section name. A value with its own `env` name keeps it. */
   prefix?: TPrefix;
 };
 

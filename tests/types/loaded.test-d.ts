@@ -92,10 +92,18 @@ describe("env", () => {
     }>();
   });
 
-  it("should put a prefix in front of every name", () => {
+  it("should use a prefix in place of the section", () => {
     expectTypeOf(cfg.env("web-client-1", { prefix: "AUTH" })).toEqualTypeOf<{
-      AUTH_WEB_CLIENT_1_CLIENT_ID?: string;
-      AUTH_WEB_CLIENT_1_REDIRECT_URI?: string;
+      AUTH_CLIENT_ID?: string;
+      AUTH_REDIRECT_URI?: string;
+    }>();
+  });
+
+  it("should leave a declared env name alone when there is a prefix", () => {
+    expectTypeOf(cfg.env("stripe", { prefix: "PAY" })).toEqualTypeOf<{
+      PAY_SECRET_KEY?: string;
+      PAY_WEBHOOK_SECRET?: string;
+      NEXT_PUBLIC_STRIPE_KEY?: string;
     }>();
   });
 
