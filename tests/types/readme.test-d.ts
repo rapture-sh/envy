@@ -36,6 +36,11 @@ async function readme(): Promise<void> {
   });
 
   await envy.ui.run("Setup", async () => {
+    await envy.check([
+      { name: "Node", run: "node --version", version: ">=22", fix: "nvm install 22" },
+      { name: "Docker", run: "docker info", fix: "Start Docker Desktop" },
+    ]);
+
     const cfg = await envy.load(schema);
 
     const api = "http://127.0.0.1:8080";
