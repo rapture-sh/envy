@@ -5,7 +5,7 @@ import { vi } from "vitest";
  * so capturing both is capturing all of it. Tests assert on the result, including the
  * assertion that a known value never appears in it.
  */
-export async function capture(work: () => void | Promise<void>): Promise<string> {
+export async function capture(work: () => unknown): Promise<string> {
   const chunks: string[] = [];
 
   const record = (chunk: unknown): boolean => {
