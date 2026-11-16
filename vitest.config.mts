@@ -20,14 +20,14 @@ export default defineConfig({
       provider: "v8",
       include: ["src/**/*.ts"],
       // Nothing but re-exports, so it is covered by everything and measures nothing.
-      exclude: ["src/index.ts", "src/envy.ts"],
+      exclude: ["src/index.ts", "src/envy.ts", "src/ui/index.ts"],
       // A floor rather than a target: set just under what the suite reaches, so a change
       // that drops real coverage fails while a line of error text does not.
       thresholds: {
-        statements: 90,
-        branches: 85,
-        functions: 90,
-        lines: 90,
+        statements: 98,
+        branches: 92,
+        functions: 99,
+        lines: 99,
       },
     },
   },

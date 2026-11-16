@@ -1,3 +1,7 @@
+import { defaults } from "./defaults.js";
+import { Fail, fail } from "./errors.js";
+import { ui } from "./ui/index.js";
+
 /**
  * The whole public surface, assembled in one place.
  *
@@ -6,4 +10,9 @@
  * module reaches this object, so adding a module and forgetting to expose it fails the
  * build rather than going unnoticed.
  */
-export const envy = {} as const;
+export const envy = {
+  defaults,
+  fail,
+  Fail,
+  ui,
+} as const;
