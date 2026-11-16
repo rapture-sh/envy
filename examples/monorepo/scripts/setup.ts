@@ -22,7 +22,10 @@ const schema = envy.defineConfig({
     note: "Everything every app needs.",
     values: {
       environment: { describe: "Which stack this is.", default: "development" },
-      sealKey: { describe: "Seals every session cookie.", generate: { bytes: 32 } },
+      sealKey: {
+        describe: "Seals every session cookie.",
+        generate: { bytes: 32 },
+      },
     },
   },
 
