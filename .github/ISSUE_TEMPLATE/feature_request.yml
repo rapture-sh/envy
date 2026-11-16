@@ -1,0 +1,62 @@
+name: Feature request
+description: Something envy should be able to do
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        envy is a library of primitives, not a framework. The settled non-goals are a
+        pipeline or step DSL, a secret manager, remote config, process supervision and a
+        runtime `.env` loader. If your idea is one of those, say why it cannot be a few
+        lines in the setup script itself, because that is the bar.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of thing is it
+      options:
+        - A new adapter (something setup routinely shells out to)
+        - A new format for write()
+        - A new warning
+        - Something on the schema (defineConfig)
+        - Better prompts or output
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: >
+        What you are doing by hand in a setup script today, and why it is annoying. Paste
+        the lines if you have them. A real script beats a description.
+      render: js
+    validations:
+      required: true
+
+  - type: textarea
+    id: shape
+    attributes:
+      label: What you would want to call
+      description: >
+        Sketch the API as you would want to write it in a script. It does not have to be
+        right, it has to show the shape.
+      render: js
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you tried instead
+      description: Composing the existing pieces, a different tool, doing without.
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Does it fit
+      options:
+        - label: It does not need envy to own the order my script runs things in
+        - label: It does not need a runtime dependency
+        - label: It can be tested without docker, a network or a shell
