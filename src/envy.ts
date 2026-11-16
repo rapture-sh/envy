@@ -1,3 +1,4 @@
+import { cmd } from "./cmd.js";
 import { defaults } from "./defaults.js";
 import { Fail, fail } from "./errors.js";
 import { ui } from "./ui/index.js";
@@ -11,6 +12,7 @@ import { ui } from "./ui/index.js";
  * build rather than going unnoticed.
  */
 export const envy = {
+  cmd,
   defaults,
   fail,
   Fail,

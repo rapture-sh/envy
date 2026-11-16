@@ -33,7 +33,11 @@ than code you can read, so check that a file exists before assuming it.
 3. **Nothing goes through a shell.** `cmd` spawns directly. A string splits on whitespace,
    an array is passed as it is. No `shell: true`, no `exec`, no string interpolation into
    a command anywhere. A value out of `config.yml` must never be able to become a command,
-   an argument separator or a redirect.
+   an argument separator or a redirect. The single exception is a Windows `.cmd` or `.bat`
+   shim, which cannot be spawned at all: Node refuses one outright since the batch
+   argument-injection fix, and the file is not an executable to begin with. `spawnable` in
+   `cmd.ts` escapes every argument and hands cmd.exe one verbatim command line. That is
+   the only place cmd.exe appears in this package, and nothing reaches it unescaped.
 4. **`write` is the only thing that touches disk.** Formats render to a string and touch
    nothing. The store is the one other writer, and it writes two files it owns. Nothing
    else in `src/` opens a file for writing.
