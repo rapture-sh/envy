@@ -332,3 +332,22 @@ overrides any global default, including a tool's own.
 
 Nothing in this repository names a private repository, an employer or an internal
 project. The README's "727 lines" is a measurement, not a citation.
+
+Every Linux job runs on Blacksmith, at `blacksmith-2vcpu-ubuntu-2404`, which needs the
+Blacksmith app installed on the repository. Only 2vcpu is served on this account: a larger
+size, or any `blacksmith-*-arm` label, is accepted and then queues forever instead of
+failing, which is a slow way to find out.
+
+## Dependencies and protection
+
+Renovate owns every version update, under one policy shared by every rapture-sh repository:
+`renovate-config.json` in `rapture-sh/.github`, which `.github/renovate.json` here extends
+and nothing else. It holds a new release for seven days before offering it, unless the
+dependency carries a published advisory, which skips the wait. Dependabot is enabled for
+alerts and security fixes only, with no `dependabot.yml`, so one bump never arrives as two
+pull requests. Change the policy in the shared preset, not here.
+
+`.github/rulesets/` holds what protects `main` and the release tags, as the JSON the API takes, so
+the live rule can be diffed against the repository rather than read off a settings page.
+The contexts in `main.json` are job names from `checks.yml`: renaming a job without
+renaming it there silently stops it gating the branch.
