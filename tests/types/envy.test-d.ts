@@ -9,7 +9,9 @@ import { envy } from "~/index";
  */
 describe("the envy surface", () => {
   it("should carry exactly the public modules", () => {
-    expectTypeOf<keyof typeof envy>().toEqualTypeOf<"cmd" | "defaults" | "fail" | "Fail" | "ui">();
+    expectTypeOf<keyof typeof envy>().toEqualTypeOf<
+      "cmd" | "defaults" | "defineConfig" | "fail" | "Fail" | "ui"
+    >();
   });
 
   it("should expose the output helpers under ui", () => {

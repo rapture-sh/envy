@@ -1,5 +1,6 @@
 import { cmd } from "./cmd.js";
 import { defaults } from "./defaults.js";
+import { defineConfig } from "./define.js";
 import { Fail, fail } from "./errors.js";
 import { ui } from "./ui/index.js";
 
@@ -14,6 +15,7 @@ import { ui } from "./ui/index.js";
 export const envy = {
   cmd,
   defaults,
+  defineConfig,
   fail,
   Fail,
   ui,
