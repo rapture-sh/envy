@@ -1,6 +1,6 @@
 import { Fail } from "../errors.js";
 
-type YamlModule = { parse: (text: string) => unknown };
+type YamlModule = { parse: (text: string) => unknown; stringify: (value: unknown) => string };
 
 let loaded: YamlModule | undefined;
 
@@ -16,7 +16,7 @@ export async function yamlModule(): Promise<YamlModule> {
     loaded = (await import("yaml")) as YamlModule;
   } catch {
     throw new Fail(
-      "Reading YAML needs the `yaml` package, which is an optional peer dependency. Install it with `pnpm add -D yaml`.",
+      "YAML needs the `yaml` package, which is an optional peer dependency. Install it with `pnpm add -D yaml`.",
     );
   }
 
@@ -46,4 +46,11 @@ export function quoteValue(value: string): string {
   }
 
   return value;
+}
+
+/** Render a value as YAML, through the same optional peer. */
+export async function yamlStringify(value: unknown): Promise<string> {
+  const { stringify } = await yamlModule();
+
+  return stringify(value);
 }

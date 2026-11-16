@@ -13,8 +13,18 @@ export type {
   ValueType,
 } from "./define.js";
 export { envy } from "./envy.js";
+export type {
+  EnvInput,
+  EnvOptions as EnvFormatOptions,
+  EnvValues,
+  JsonOptions,
+  TextOptions,
+  YamlOptions,
+} from "./format/index.js";
 export type { AskMode, LoadOptions } from "./load.js";
 export type { EnvOptions, Loaded } from "./loaded.js";
 export type { EnvName, Kebab, Prefixed } from "./naming.js";
 export type { StoreData } from "./store/index.js";
 export type { ReadyOptions, RunOptions, Warning, WarnOptions } from "./ui/index.js";
+export type { HttpWaitOptions, PortWaitOptions, WaitOptions } from "./wait.js";
+export type { WriteOptions, WriteResult } from "./write.js";
