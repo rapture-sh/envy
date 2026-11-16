@@ -23,11 +23,6 @@
       "Bash(git add:*)",
       "Bash(git commit:*)"
     ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./config.yml)",
-      "Read(./**/config.yml)"
-    ]
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./config.yml)", "Read(./**/config.yml)"]
   }
 }

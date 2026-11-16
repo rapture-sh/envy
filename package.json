@@ -1,0 +1,92 @@
+{
+  "name": "@rapture-sh/envy",
+  "version": "0.1.0",
+  "description": "A toolchain for the setup script every repository ends up writing: declare what config.yml holds, ask only for what is missing, and generate every env file from it.",
+  "keywords": [
+    "env",
+    "dotenv",
+    "setup",
+    "bootstrap",
+    "monorepo",
+    "scaffolding",
+    "developer-experience",
+    "typescript"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/rapture-sh/envy#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rapture-sh/envy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rapture-sh/envy/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "example:single": "tsx examples/single-app/scripts/setup.ts",
+    "example:monorepo": "tsx examples/monorepo/scripts/setup.ts",
+    "example:addresses": "tsx examples/two-addresses/scripts/setup.ts",
+    "example:custom": "tsx examples/custom-format/scripts/setup.ts",
+    "examples": "pnpm example:single && pnpm example:monorepo && pnpm example:addresses && pnpm example:custom",
+    "check": "pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:types && pnpm examples && pnpm build && pnpm check:exports",
+    "check:exports": "publint --strict && attw --pack . --profile esm-only",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "format": "biome format --write",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:types": "vitest run --typecheck.only",
+    "test:coverage": "vitest run --coverage",
+    "changeset": "changeset",
+    "release": "pnpm build && changeset publish",
+    "prepare": "husky"
+  },
+  "packageManager": "pnpm@10.23.0",
+  "lint-staged": {
+    "*.{ts,mts,js,mjs,cjs,json,jsonc}": "biome format --write --no-errors-on-unmatched"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@biomejs/biome": "^2.6.8",
+    "@changesets/cli": "^3.0.3",
+    "@types/node": "^26.6.6",
+    "@vitest/coverage-v8": "^5.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "publint": "^0.3.25",
+    "tsdown": "^0.23.7",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "unrun": "^0.3.1",
+    "vitest": "^5.1.0",
+    "yaml": "^2.9.1"
+  },
+  "peerDependencies": {
+    "yaml": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "yaml": {
+      "optional": true
+    }
+  }
+}
