@@ -10,6 +10,7 @@ export type {
   LogsOptions,
   UpOptions,
 } from "./adapters/docker.js";
+export type { Check, CheckOptions, CheckOutcome } from "./check.js";
 export type { CmdOptions, CmdResult } from "./cmd.js";
 export type { Defaults } from "./defaults.js";
 export type {

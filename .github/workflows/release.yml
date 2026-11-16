@@ -52,7 +52,6 @@ jobs:
           # No NODE_AUTH_TOKEN on purpose. Publishing goes through the OIDC exchange that
           # `id-token: write` above allows, and an empty token here would put an empty
           # auth line in the .npmrc for npm to try first.
-
       # `changeset tag` writes the tags locally. This changesets version reports them as
       # "Created git tags:", which is not the shape the action parses, so it does not push
       # them itself. A run that published nothing has none to push and this does nothing.

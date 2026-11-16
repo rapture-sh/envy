@@ -29,6 +29,7 @@ call the functions you need.
 
 - [Install](#install)
 - [A setup script, start to finish](#a-setup-script-start-to-finish)
+- [Checking prerequisites](#checking-prerequisites)
 - [Declaring the config](#declaring-the-config)
 - [Loading it](#loading-it)
 - [Writing the files your apps read](#writing-the-files-your-apps-read)
@@ -97,6 +98,11 @@ const schema = envy.defineConfig({
 });
 
 await envy.ui.run("Setup", async () => {
+  await envy.check([
+    { name: "Node", run: "node --version", version: ">=22", fix: "nvm install 22" },
+    { name: "Docker", run: "docker info", fix: "Start Docker Desktop" },
+  ]);
+
   const cfg = await envy.load(schema);
 
   const api = "http://127.0.0.1:8080";
@@ -132,6 +138,69 @@ await envy.ui.run("Setup", async () => {
 Run it twice and the second run asks nothing, rotates nothing and rewrites nothing. Run it
 in CI, where there is no terminal, and it reports what is unanswered and carries on rather
 than waiting for a keypress that is never coming.
+
+## Checking prerequisites
+
+Before asking anybody for a value, check the machine can run what comes next.
+
+```ts
+await envy.check([
+  { name: "Node", run: "node --version", version: ">=22", fix: "nvm install 22" },
+  { name: "Python", run: "python --version", version: ">=3.11", fix: "brew install python@3.11" },
+  { name: "Docker", run: "docker info", optional: true, fix: "Start Docker Desktop" },
+  { name: "Terraform", run: "terraform version", fix: "brew install terraform" },
+]);
+```
+
+**Every check runs, including the ones after a failure**, and you get one report at the
+end rather than one failure at a time:
+
+```
+prerequisites
+  ✓ Node       22.17.0
+  ✗ Python     found 3.9.2, needs >=3.11
+               brew install python@3.11
+  ! Docker     optional, `docker` is not on the PATH. Install it, or open a new shell.
+               Start Docker Desktop
+  ✗ Terraform  `terraform` is not on the PATH. Install it, or open a new shell.
+               brew install terraform
+```
+
+Then it stops with `2 prerequisites are not met: Python, Terraform.` That ordering is the
+whole point. A setup that gives up at the first missing tool sends somebody off to install
+it, only to meet the next one on the next run, and the one after that on the run after.
+
+| On a check | What it does |
+| --- | --- |
+| `name` | what to call it in the report |
+| `run` | the command that decides it. Exit zero passes |
+| `version` | a range the output has to satisfy, like `">=22"` or `">=3.11 <4"` |
+| `match` | where the version is, when the first number in the output is the wrong one |
+| `ok` | a decision of your own, given the command's result |
+| `fix` | what a human should do, printed under the failure |
+| `optional` | reported when it fails, but never fails the run |
+| `timeout` | milliseconds before giving up on this one |
+
+Versions are compared as "new enough to work", not as semver: `>=`, `>`, `<=`, `<` and
+`=`, separated by spaces when you want more than one. A missing part is zero, so `">=3.11"`
+is satisfied by `3.11.5`. The version is read from stdout and stderr together, because
+`java -version` writes to stderr while most tools write to stdout.
+
+When an exit code is not enough, decide it yourself:
+
+```ts
+{
+  name: "Postgres",
+  run: ["psql", "-tAc", "select 1"],
+  ok: (result) => result.out.trim() === "1",
+  fix: "docker compose up -d postgres",
+}
+```
+
+`envy.check` throws once anything required failed, so `ui.run` prints it and exits 1. Pass
+`{ allowFailure: true }` to get the outcomes back and decide for yourself.
+
+Nothing here goes through a shell: checks run through `envy.cmd` like everything else.
 
 ## Declaring the config
 
@@ -464,6 +533,7 @@ ENVY_NO_WARN=1 pnpm setup
 
 | | |
 | --- | --- |
+| `envy.check(checks, options)` | run every prerequisite, then report all of them at once |
 | `envy.defineConfig(schema)` | describe `config.yml`: sections, values, prompts, env names |
 | `envy.load(schema, options)` | read it, ask for the gap, write it back, return it typed |
 | `cfg.get("section.value")` | one value, typed |
@@ -504,6 +574,7 @@ four that need nothing running are run in CI.
 | [`monorepo`](./examples/monorepo) | a section per app, each app getting its own file |
 | [`two-addresses`](./examples/two-addresses) | one service reached from the host and from inside compose |
 | [`custom-format`](./examples/custom-format) | `write()` with your own renderer |
+| [`with-prerequisites`](./examples/with-prerequisites) | check the machine before asking for anything |
 | [`with-docker`](./examples/with-docker) | compose up, wait, exec, capture what a container prints |
 | [`with-convex`](./examples/with-convex) | push an env file into a deployment and deploy |
 

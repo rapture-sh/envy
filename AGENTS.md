@@ -48,8 +48,10 @@ file exists before assuming it.
 4. **`write` is the only thing that touches disk.** Formats render to a string and touch
    nothing. The store is the one other writer, and it writes two files it owns. Nothing
    else in `src/` opens a file for writing.
-5. **Core never spawns a process.** `cmd.ts` and `adapters/` do. Everything else writes
-   files, renders strings and asks questions.
+5. **Core never spawns a process.** `cmd.ts` is the one place anything spawns. `adapters/`
+   and `check.ts` reach processes only by calling it, which is what keeps the timeout, the
+   Windows shim and the test stub in one place. Everything else writes files, renders
+   strings and asks questions.
 6. **Idempotent.** Running a script twice changes nothing. A generated value is never
    rotated, a captured value is never captured twice, a written file is byte identical.
    Every writer and every kept value has a test that runs it twice.
@@ -124,6 +126,7 @@ src/
     text.ts                a string, unchanged, with a header if one is given
   parse.ts                 parseEnv, for reading a file back
   cmd.ts                   spawn, never through a shell, with the Windows shim
+  check.ts                 prerequisites. every one runs, reported together.
   wait.ts                  http and port polling
   gitignore.ts             whether a path is ignored, behind the warning
   defaults.ts              the process-wide timeout and warn settings
@@ -133,6 +136,7 @@ src/
     step.ts                step, spinner, timing
     report.ts              ready(), the address block
     warn.ts                the warning block, and what silences it
+    checks.ts              the prerequisite block, passes and failures together
     run.ts                 the frame: header, total time, exit code
   adapters/
     docker.ts              compose up, down, exec, logs, ps
@@ -147,6 +151,7 @@ examples/                  one fake repo per thing shown, run against src/ with 
   monorepo/                a section per app, each app getting its own file
   two-addresses/           one service, reached from the host and from inside compose
   custom-format/           write() with a renderer of your own
+  with-prerequisites/      check the machine before asking for anything
   with-docker/             compose up, wait, exec, capture. needs docker.
   with-convex/             push an env file and deploy. needs a deployment.
 ```

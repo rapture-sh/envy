@@ -1,5 +1,6 @@
 import { convex } from "./adapters/convex.js";
 import { docker } from "./adapters/docker.js";
+import { check } from "./check.js";
 import { cmd } from "./cmd.js";
 import { defaults } from "./defaults.js";
 import { defineConfig } from "./define.js";
@@ -20,6 +21,7 @@ import { write } from "./write.js";
  * build rather than going unnoticed.
  */
 export const envy = {
+  check,
   cmd,
   convex,
   docker,

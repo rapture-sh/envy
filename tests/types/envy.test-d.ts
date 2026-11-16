@@ -10,6 +10,7 @@ import { envy } from "~/index";
 describe("the envy surface", () => {
   it("should carry exactly the public modules", () => {
     expectTypeOf<keyof typeof envy>().toEqualTypeOf<
+      | "check"
       | "cmd"
       | "convex"
       | "docker"
