@@ -13,9 +13,16 @@ provider, a driver or a backend, in code, in docs or in a commit message.
 
 It is part of [Rapture.sh](https://rapture.sh) and is MIT licensed.
 
-**What is in the tree right now.** Read the tree before trusting this paragraph. Where
-this file names a module that has not landed, it is the contract for building it rather
-than code you can read, so check that a file exists before assuming it.
+**What is in the tree right now.** All of it, and the layout below is accurate:
+`defineConfig` and its type machinery, the store and the template, `load` with the prompt
+loop, generated and captured values, `write` with the four formats, `parseEnv`, `cmd`,
+`wait`, the gitignore check, the output layer, and the docker and convex adapters. Four
+examples run in CI and two more are there to be read. What has no code yet is a second
+look at profiles, which deliberately have none, and any adapter beyond the two.
+
+Read the tree before trusting this paragraph. Where this file names a module that has not
+landed, it is the contract for building it rather than code you can read, so check that a
+file exists before assuming it.
 
 ## The rules that matter
 
