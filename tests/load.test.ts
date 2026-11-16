@@ -339,12 +339,15 @@ describe("load, with a terminal to ask in", () => {
   });
 
   it("should ask again for everything when told to", async () => {
-    withKeyboard("sk_test_first", "whsec_first", "sk_test_second", "whsec_second", "");
-
     await inRepo(async (cwd) => {
       let value = "";
 
+      // A keyboard each, because each run is its own prompt loop reading its own stream.
+      withKeyboard("sk_test_first", "whsec_first");
+
       await capture(() => load(schema, { cwd }));
+
+      withKeyboard("sk_test_second", "whsec_second", "");
 
       await capture(async () => {
         value = (await load(schema, { cwd, ask: "all" })).get("stripe.secretKey");
