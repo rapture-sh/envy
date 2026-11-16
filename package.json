@@ -1,6 +1,6 @@
 {
   "name": "@rapture-sh/envy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A toolchain for the setup script every repository ends up writing: declare what config.yml holds, ask only for what is missing, and generate every env file from it.",
   "keywords": [
     "env",
