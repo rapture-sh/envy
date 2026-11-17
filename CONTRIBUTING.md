@@ -1,4 +1,4 @@
-# Contributing to @rapture-sh/envy
+# Contributing to @rapturedotsh/envy
 
 Thanks for being here. You do not need permission to start, though opening an issue first
 is a good way to talk something through. A new adapter, or a format that `write` should
@@ -129,7 +129,7 @@ Two things every contribution touching a writer or a kept value has to prove:
 Default answer is no. envy has no runtime dependencies, and the adapters spawn CLIs rather
 than importing SDKs, which is what keeps it that way. `yaml` is an **optional peer
 dependency**, needed only for the YAML store and the YAML format: installing
-`@rapture-sh/envy` must not install anything.
+`@rapturedotsh/envy` must not install anything.
 
 If something genuinely needs a package, it is an optional peer too. Say so in the PR
 description and add it to the peer dependency meta.

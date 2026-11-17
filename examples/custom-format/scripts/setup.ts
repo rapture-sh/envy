@@ -1,6 +1,6 @@
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { envy } from "@rapture-sh/envy";
+import { envy } from "@rapturedotsh/envy";
 
 /**
  * `write()` with a renderer of your own.

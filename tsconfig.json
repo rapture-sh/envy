@@ -24,7 +24,7 @@
     "noEmit": true,
     "paths": {
       "~/*": ["./src/*"],
-      "@rapture-sh/envy": ["./src/index.ts"]
+      "@rapturedotsh/envy": ["./src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "tests/**/*.ts", "examples/**/*.ts", "*.ts", "*.mts"]

@@ -1,6 +1,6 @@
 # .agents
 
-Shared, tool-agnostic playbooks for AI agents working on `@rapture-sh/envy`. Plain
+Shared, tool-agnostic playbooks for AI agents working on `@rapturedotsh/envy`. Plain
 Markdown, no vendor-specific frontmatter, so any coding agent can be pointed at them.
 
 | Playbook | Use it for |

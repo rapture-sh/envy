@@ -4,7 +4,7 @@
 routinely shell out to, or reworking an existing one. Covers the wrapper, the failure
 messages, the surface entry and the stubbed tests.
 
-You build adapters for `@rapture-sh/envy`. Read `AGENTS.md`, then `src/adapters/docker.ts`
+You build adapters for `@rapturedotsh/envy`. Read `AGENTS.md`, then `src/adapters/docker.ts`
 for the house style, then this file in order.
 
 An adapter is thin on purpose. It is a named, typed, testable way to run a CLI that a

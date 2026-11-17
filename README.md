@@ -1,10 +1,10 @@
-# @rapture-sh/envy
+# @rapturedotsh/envy
 
 One `config.yml` at the root of your TypeScript monorepo, and a short script that turns it
 into every `.env` your apps actually read.
 
 ```bash
-pnpm add -D @rapture-sh/envy
+pnpm add -D @rapturedotsh/envy
 ```
 
 ## Why
@@ -50,17 +50,17 @@ call the functions you need.
 ## Install
 
 ```bash
-pnpm add -D @rapture-sh/envy
+pnpm add -D @rapturedotsh/envy
 ```
 
 ```bash
-npm install --save-dev @rapture-sh/envy
+npm install --save-dev @rapturedotsh/envy
 ```
 
 One import reaches everything:
 
 ```ts
-import { envy } from "@rapture-sh/envy";
+import { envy } from "@rapturedotsh/envy";
 ```
 
 `envy` is the only runtime export. Type `envy.` and your editor lists the toolchain.
@@ -72,7 +72,7 @@ Point `"setup": "tsx scripts/setup.ts"` at it and `pnpm setup` is the one comman
 colleague runs.
 
 ```ts
-import { envy } from "@rapture-sh/envy";
+import { envy } from "@rapturedotsh/envy";
 
 const schema = envy.defineConfig({
   stripe: {

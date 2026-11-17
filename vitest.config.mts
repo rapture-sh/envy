@@ -6,7 +6,7 @@ export default defineConfig({
     // The package's own name as well as `~`, because the examples import it the way a
     // consumer would.
     alias: {
-      "@rapture-sh/envy": fileURLToPath(new URL("./src/index.ts", import.meta.url)),
+      "@rapturedotsh/envy": fileURLToPath(new URL("./src/index.ts", import.meta.url)),
       "~": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },

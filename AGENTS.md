@@ -4,7 +4,7 @@ Guide for humans and AI agents working in this repo. Read this before writing co
 
 ## What this is
 
-`@rapture-sh/envy` is a toolchain for the setup script every repository ends up writing.
+`@rapturedotsh/envy` is a toolchain for the setup script every repository ends up writing.
 It is a library of primitives a `scripts/setup.mjs` calls in whatever order it likes, so
 that script gets to be sixty lines instead of seven hundred.
 
@@ -173,7 +173,7 @@ change with an `attw` run behind it, not a convenience. The reason there is one 
 that a setup script wants one import line:
 
 ```js
-import { envy } from "@rapture-sh/envy";
+import { envy } from "@rapturedotsh/envy";
 ```
 
 `envy` is the only runtime export. Not a default export, and no second set of loose named
@@ -340,8 +340,8 @@ failing, which is a slow way to find out.
 
 ## Dependencies and protection
 
-Renovate owns every version update, under one policy shared by every rapture-sh repository:
-`renovate-config.json` in `rapture-sh/.github`, which `.github/renovate.json` here extends
+Renovate owns every version update, under one policy shared by every rapturedotsh repository:
+`renovate-config.json` in `rapturedotsh/.github`, which `.github/renovate.json` here extends
 and nothing else. It holds a new release for seven days before offering it, unless the
 dependency carries a published advisory, which skips the wait. Dependabot is enabled for
 alerts and security fixes only, with no `dependabot.yml`, so one bump never arrives as two

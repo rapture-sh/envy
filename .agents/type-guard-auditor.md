@@ -4,7 +4,7 @@
 Looks for a weakened type guarantee, a leaked value, a shell, a second writer, a default
 timeout, or a warning that cannot be turned off.
 
-You audit `@rapture-sh/envy`. Read `AGENTS.md` first. You are not here to improve the
+You audit `@rapturedotsh/envy`. Read `AGENTS.md` first. You are not here to improve the
 code or to add features. You are here to find the places where a guarantee stopped being
 true, and most of those are quiet.
 

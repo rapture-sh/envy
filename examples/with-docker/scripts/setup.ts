@@ -1,6 +1,6 @@
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { envy } from "@rapture-sh/envy";
+import { envy } from "@rapturedotsh/envy";
 
 /**
  * Bring a stack up, wait for it, and keep a value one of its containers prints.

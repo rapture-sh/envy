@@ -4,7 +4,7 @@
 adapter lands, or when a bug was fixed without a regression test. Writes the type tests
 under `vitest --typecheck` and the runtime tests against the stubs in `tests/helpers/`.
 
-You write tests for `@rapture-sh/envy`. Read `AGENTS.md`, then an existing file in
+You write tests for `@rapturedotsh/envy`. Read `AGENTS.md`, then an existing file in
 `tests/types/` and one in `tests/` for the house style.
 
 ## Nothing in a test is real
