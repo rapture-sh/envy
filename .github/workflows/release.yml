@@ -98,18 +98,7 @@ jobs:
       - run: pnpm check
 
       # npm, because `pnpm publish` does not do the OIDC exchange that trusted publishing
-      # needs.
-      #
-      # NODE_AUTH_TOKEN is here only to create the package. A trusted publisher is
-      # configured on a package's own settings page on npm, so there is nothing to
-      # configure until one publish has already happened, and that first one has to be a
-      # token. Provenance is unaffected: it needs `id-token: write` and a GitHub hosted
-      # runner, not trusted publishing.
-      #
-      # Delete these two lines and the NPM_TOKEN secret once the publisher is configured.
-      # They cannot stay: an unset secret expands to empty, which writes an empty auth
-      # line into the .npmrc that setup-node generates, and npm tries that before the
-      # OIDC exchange and fails on it.
+      # needs. No NODE_AUTH_TOKEN, for the same reason the exchange works at all: an empty
+      # one writes an empty auth line into the .npmrc that setup-node generates, and npm
+      # tries that first.
       - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

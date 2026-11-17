@@ -351,11 +351,13 @@ to `main` only maintains that pull request, and pushing `v<version>` is the whol
 releasing. They share one file because a trusted publisher on npm is registered against a
 single workflow filename.
 
-The publish step carries a `NODE_AUTH_TOKEN` only until the package exists. A trusted
-publisher is configured on a package's own settings page, so there is nothing to configure
-before the first publish, and that one has to be a token. It comes out again afterwards,
-because an unset secret expands to empty and npm tries that empty auth line before the
-OIDC exchange rather than after it.
+The publisher itself is registered with
+`npm trust github --file release.yml --repo rapturedotsh/envy --allow-publish`, which wants
+`npm@11.15.0` or newer and 2FA on the account, and refuses a granular token that bypasses
+2FA. It cannot run before the package exists, because a trust configuration hangs off a
+package: the version that created this one went out by hand, under a `bootstrap` dist tag
+so that `latest` only ever started at `0.1.0`. The registry keeps one configuration per
+package, so replacing it means `npm trust list`, then `npm trust revoke --id <id>`.
 
 Nothing in CI creates the tag, and it is a person pushing it that starts a release. A tag
 pushed with `GITHUB_TOKEN` raises no event, so a workflow that tagged itself could never
