@@ -77,7 +77,7 @@ file exists before assuming it.
 - Biome for lint and format
 - Vitest for both tiers of tests, with `--typecheck` and `expectTypeOf` for the type tier
 - `publint` and `@arethetypeswrong/cli` against the built package
-- Changesets for versioning, `npm publish --provenance` from CI
+- Changesets for versioning, and a `v*` tag publishing from CI through npm trusted publishing
 
 ## Commands
 
@@ -337,6 +337,20 @@ Every Linux job runs on Blacksmith, at `blacksmith-2vcpu-ubuntu-2404`, which nee
 Blacksmith app installed on the repository. Only 2vcpu is served on this account: a larger
 size, or any `blacksmith-*-arm` label, is accepted and then queues forever instead of
 failing, which is a slow way to find out.
+
+**The release job is the exception and runs on `ubuntu-latest`.** The registry rejects a
+provenance statement built anywhere but a GitHub hosted runner, and Blacksmith is
+self-hosted as far as it is concerned, so a publish from there fails with `422 ...
+Unsupported GitHub Actions runner environment: "self-hosted"`. Provenance is most of the
+point of trusted publishing, so the runner gives way rather than the provenance.
+
+The publish step runs **before** the step that opens the version pull request, because
+`changeset version` rewrites `package.json` in that same job's tree. Publishing after it
+ships the version nobody has merged, from an ordinary push to `main`.
+
+It tags with `git tag "v$version"` rather than `changeset git-tag`. That command reads what
+to tag out of `@manypkg/get-packages`, which finds no packages in a repository with no
+`pnpm-workspace.yaml`, so it exits 0 having tagged nothing.
 
 ## Dependencies and protection
 

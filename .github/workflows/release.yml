@@ -3,6 +3,7 @@ name: Release
 on:
   push:
     branches: [main]
+    tags: ["v*"]
 
 concurrency:
   group: release
@@ -20,20 +21,51 @@ permissions:
 # `400 Default branch not found for repository` for a repository it has not picked up yet,
 # which makes the `actions/setup-node` cache step warn. That is their end. Drop the cache
 # line rather than debugging it.
+#
+# The two jobs below are one workflow rather than two files because a trusted publisher on
+# npm is registered against a single workflow filename. Splitting the publish into its own
+# file would mean re-registering it there.
 jobs:
-  release:
-    name: Release
+  # Opens and maintains the version pull request while changesets are pending, and does
+  # nothing else. Merging it lands the bumped `package.json` and the changelog on main;
+  # pushing `v<version>` is what publishes. `checks.yml` already runs the suite on every
+  # push to main, so this job does not repeat it.
+  version:
+    name: Version
+    if: startsWith(github.ref, 'refs/heads/')
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
       contents: write
       pull-requests: write
-      # Required for npm provenance, which is what lets the registry attest that this
-      # tarball was built by this workflow from this commit.
-      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: changesets/action@v1
+        with:
+          version: pnpm changeset version
+          commit: "chore: release"
+          title: "chore: release"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Publish
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: read
+      # Required for the OIDC exchange trusted publishing needs, which is also what lets
+      # the registry attest that this tarball was built by this workflow from this commit.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -46,39 +78,23 @@ jobs:
       - run: npm install --global npm@latest
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm check
 
-      # Opens and maintains the version pull request while changesets are pending. It is
-      # given no `publish` input, because the step below is the publish.
-      - uses: changesets/action@v1
-        with:
-          version: pnpm changeset version
-          commit: "chore: release"
-          title: "chore: release"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # npm, because `changeset publish` publishes with pnpm in a pnpm repository and pnpm
-      # does not do the OIDC exchange that trusted publishing needs. No NODE_AUTH_TOKEN
-      # for the same reason the exchange works at all: an empty one writes an empty auth
-      # line into the .npmrc that setup-node generates, and npm tries that first.
-      #
-      # The registry is asked about the version first because this step runs on every push
-      # to main, and `npm publish` over a version that is already there fails the job.
-      - name: Publish
+      # A tag that disagrees with `package.json` would publish a version nobody decided on,
+      # and the registry would take it. Fail here instead, where it costs nothing.
+      - name: Check the tag against package.json
         run: |
-          name=$(node -p "require('./package.json').name")
           version=$(node -p "require('./package.json').version")
-
-          if npm view "$name@$version" version > /dev/null 2>&1; then
-            echo "$name@$version is already published."
-            exit 0
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "tag $GITHUB_REF_NAME does not match package.json version $version" >&2
+            exit 1
           fi
 
-          pnpm build
-          npm publish
-          pnpm changeset git-tag
+      # Ends with the build and then packs it for `attw`, so `dist` is current by the time
+      # the publish below reads it.
+      - run: pnpm check
 
-      # The tags are written locally by the step above, and a run that published nothing
-      # has none to push, so this does nothing on an ordinary commit.
-      - run: git push --tags
+      # npm, because `pnpm publish` does not do the OIDC exchange that trusted publishing
+      # needs. No NODE_AUTH_TOKEN, for the same reason the exchange works at all: an empty
+      # one writes an empty auth line into the .npmrc that setup-node generates, and npm
+      # tries that first.
+      - run: npm publish
