@@ -12,10 +12,10 @@ concurrency:
 permissions:
   contents: read
 
-# Every Linux job here runs on Blacksmith, which needs the Blacksmith GitHub App installed
-# on this repository. Stay on 2vcpu: a job asking for a label this account's plan does not
+# The version job runs on Blacksmith, which needs the Blacksmith GitHub App installed on
+# this repository. Stay on 2vcpu: a job asking for a label this account's plan does not
 # serve, which is any larger size and every `blacksmith-*-arm` label, is accepted and then
-# queues forever rather than failing.
+# queues forever rather than failing. The publish job cannot use it, and says why.
 #
 # Blacksmith also intercepts the Actions cache API, and can answer
 # `400 Default branch not found for repository` for a repository it has not picked up yet,
@@ -58,7 +58,11 @@ jobs:
   publish:
     name: Publish
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    # Not Blacksmith. The registry rejects a provenance statement built anywhere but a
+    # GitHub hosted runner, and Blacksmith is self-hosted as far as it is concerned, so a
+    # publish from there fails with
+    # `422 ... Unsupported GitHub Actions runner environment: "self-hosted"`.
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       # Required for the OIDC exchange trusted publishing needs, which is also what lets

@@ -338,18 +338,23 @@ Blacksmith app installed on the repository. Only 2vcpu is served on this account
 size, or any `blacksmith-*-arm` label, is accepted and then queues forever instead of
 failing, which is a slow way to find out.
 
-**The release job is the exception and runs on `ubuntu-latest`.** The registry rejects a
+**The publish job is the exception and runs on `ubuntu-latest`.** The registry rejects a
 provenance statement built anywhere but a GitHub hosted runner, and Blacksmith is
 self-hosted as far as it is concerned, so a publish from there fails with `422 ...
 Unsupported GitHub Actions runner environment: "self-hosted"`. Provenance is most of the
 point of trusted publishing, so the runner gives way rather than the provenance.
 
-The publish step runs **before** the step that opens the version pull request, because
-`changeset version` rewrites `package.json` in that same job's tree. Publishing after it
-ships the version nobody has merged, from an ordinary push to `main`.
+`release.yml` is two jobs gated on the ref, not one, because `changeset version` rewrites
+`package.json` in the tree it runs in: a single job can either open the version pull
+request or publish, never both, without shipping the version nobody has merged. So a push
+to `main` only maintains that pull request, and pushing `v<version>` is the whole of
+releasing. They share one file because a trusted publisher on npm is registered against a
+single workflow filename.
 
-It tags with `git tag "v$version"` rather than `changeset git-tag`. That command reads what
-to tag out of `@manypkg/get-packages`, which finds no packages in a repository with no
+Nothing in CI creates the tag, and it is a person pushing it that starts a release. A tag
+pushed with `GITHUB_TOKEN` raises no event, so a workflow that tagged itself could never
+trigger the publish. `changeset git-tag` would not have helped either: it reads what to tag
+out of `@manypkg/get-packages`, which finds no packages in a repository with no
 `pnpm-workspace.yaml`, so it exits 0 having tagged nothing.
 
 ## Dependencies and protection
