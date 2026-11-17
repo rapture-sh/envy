@@ -351,6 +351,12 @@ to `main` only maintains that pull request, and pushing `v<version>` is the whol
 releasing. They share one file because a trusted publisher on npm is registered against a
 single workflow filename.
 
+The publish step carries a `NODE_AUTH_TOKEN` only until the package exists. A trusted
+publisher is configured on a package's own settings page, so there is nothing to configure
+before the first publish, and that one has to be a token. It comes out again afterwards,
+because an unset secret expands to empty and npm tries that empty auth line before the
+OIDC exchange rather than after it.
+
 Nothing in CI creates the tag, and it is a person pushing it that starts a release. A tag
 pushed with `GITHUB_TOKEN` raises no event, so a workflow that tagged itself could never
 trigger the publish. `changeset git-tag` would not have helped either: it reads what to tag
